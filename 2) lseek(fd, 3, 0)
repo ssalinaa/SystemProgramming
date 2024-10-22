@@ -12,11 +12,13 @@ int main() {
         perror("Cannot open file 'aa'.\n");
         return 1;
      }
+     ssize_t bytes_read;
      int i;
      for(i = 5; i > 0; i--) {
          lseek(fd, 3, 0);
-         read(fd, buffer, i);
-         printf("%s", buffer);
+         bytes_read = read(fd, buffer, BUFFER_SIZE);
+         write(1, buffer, bytes_read);
+         printf("\n");
      }
      close(fd);
      return 0;
