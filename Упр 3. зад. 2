@@ -1,0 +1,23 @@
+#include <stdio.h>
+#include <unistd.h>
+#include <fcntl.h>
+
+int main() {
+    char buffer[20];
+    int fd1 = open("f1", O_RDONLY);
+    int fd2 = open("f1", O_WRONLY);
+    if(fd1 == -1 || fd2 == -1) {
+       perror("Error while opening file.\n");
+       return 1;
+    }
+    lseek(fd2, -3, SEEK_END);
+    write(fd2, "wxyz", 4);
+
+    lseek(fd2, 4, SEEK_SET);
+    write(fd2, "12", 2);
+
+    int bytes_read = read(fd1, buffer, 20);
+    write(1, buffer, bytes_read);
+
+    return 0;
+}
