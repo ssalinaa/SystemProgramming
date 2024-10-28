@@ -1,0 +1,47 @@
+#include <stdio.h>
+#include <unistd.h>
+#include <fcntl.h>
+
+int main() {
+    char buffer[15];
+    int fd1 = open("fff", O_RDONLY);
+    int fd2 = open("fff", O_WRONLY | O_CREAT, 0777);
+    int fd3 = open("fff", O_RDWR);
+
+    if(fd1 == -1 || fd2 == -1 || fd3 == -1) {
+       perror("Cannot open file.\n");
+       return 1;
+    }
+    write(fd2, "Hello world", 11);
+
+    read(fd3, buffer, 6);
+    write(1, buffer, 6);
+
+    read(fd1, buffer, 5);
+    write(1, buffer, 5);
+
+    write(fd3, "chil", 4);
+
+    write(fd2, "!!!", 3);
+
+    read(fd1, buffer, 9);
+    write(1, buffer, 9);
+
+    printf("\n--------------------\n");
+
+    write(fd3, "Hello", 5);
+
+    write(fd2, "worlds", 6);
+
+    read(fd1, buffer, 6);
+    write(1, buffer, 6);
+
+    close(fd2);
+
+    write(fd3, "oops", 4);
+
+    read(fd1, buffer, 6);
+    write(1, buffer, 6);
+
+    return 0;
+}
