@@ -1,0 +1,33 @@
+#include <stdio.h>
+#include <unistd.h>
+#include <fcntl.h>
+#include <stdlib.h>
+
+int main(int argc, char* argv[]) {
+    if(argc != 3) {
+       printf("Not enough arguments!\n");
+       return 1;
+    }
+    int fd = open(argv[2], O_RDONLY);
+    if(fd == -1) {
+       perror("Error while opening file.\n");
+       return 1;
+    }
+    int num = atoi(argv[1]);
+    char c;
+    int n = 0;
+    while(read(fd, &c, 1)) {
+        if(c == '\n') {
+           n++;
+           if(n >= num) {
+              write(1, &c, 1);
+           }
+          continue;
+        }
+        if(n >= num) {
+           write(1, &c, 1);
+        }
+    }
+
+    return 0;
+}
